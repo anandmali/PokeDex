@@ -1,6 +1,7 @@
 package com.anandm.composeview.di
 
 import com.anandm.composeview.BuildConfig
+import com.anandm.composeview.network.PokeApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +15,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
+
+    private val baseUrl: String = "https://pokeapi.co/api/v2/"
 
     @Singleton
     @Provides
@@ -33,12 +36,17 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideRetrofit(
-        okHttpClient: OkHttpClient,
-        BASE_URL: String = "https://pokeapi.co/api/v2/"
+        okHttpClient: OkHttpClient
     ): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(BASE_URL)
+        .baseUrl(baseUrl)
         .client(okHttpClient)
         .build()
+
+    @Singleton
+    @Provides
+    fun providePokeApiService(retrofit: Retrofit): PokeApiService {
+        return retrofit.create(PokeApiService::class.java)
+    }
 
 }
