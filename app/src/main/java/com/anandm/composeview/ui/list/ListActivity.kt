@@ -36,7 +36,6 @@ class ListActivity : AppCompatActivity() {
         }
 
         listViewModel.pokemonStatus.observe(this, {
-            TODO("Parse response to list")
             Log.d("Response status => ", it?.toString() ?: "")
         })
     }
