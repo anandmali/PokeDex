@@ -12,4 +12,7 @@ class MainModule {
     @Provides
     fun getValue() = "Some value from main module"
 
+    @Provides
+    fun getFruitsList() = listOf("Apple", "Orange", "Watermelon", "Grape", "Banana")
+
 }

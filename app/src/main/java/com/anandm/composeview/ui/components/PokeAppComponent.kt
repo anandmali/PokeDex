@@ -1,45 +1,72 @@
 package com.anandm.composeview.ui.components
 
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.anandm.composeview.R
+import com.anandm.composeview.network.data.PokemonData
 import com.anandm.composeview.ui.theme.ComposeViewTheme
 import com.anandm.composeview.ui.theme.Purple200
 import com.anandm.composeview.ui.theme.Purple700
 
 @Composable
-fun PokeApp(name: String) {
+fun PokeApp(pokeList: List<PokemonData>) {
     ComposeViewTheme {
         Surface(color = MaterialTheme.colors.background) {
-            Greeting(name = name)
+            Greeting(pokeList)
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun Greeting(pokeList: List<PokemonData>) {
+    LazyColumn(
+        modifier = Modifier
+            .padding(all = 16.dp)
+            .fillMaxWidth(),
+    ) {
+        val groupedPoke = pokeList.groupBy { it.name[0] }
+
+        groupedPoke.forEach { (groupedBy, list) ->
+            stickyHeader {
+                CharacterHeader(char = groupedBy, Modifier.fillParentMaxWidth())
+            }
+            items(list) { pokeData ->
+                GreetCard(pokeData.name)
+            }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Column(
-        modifier = Modifier.padding(all = 16.dp),
-    ) {
-        for (i in 1..5) {
-            GreetCard("$name $i")
-            Spacer(modifier = Modifier.padding(bottom = 16.dp))
-        }
-    }
+fun CharacterHeader(char: Char, modifier: Modifier) {
+    Text(
+        text = char.toString(),
+        color = Purple200,
+        modifier = modifier
+            .padding(start = 8.dp),
+        style = MaterialTheme.typography.body1
+    )
+
 }
 
 @Composable
@@ -49,7 +76,8 @@ fun GreetCard(name: String) {
         elevation = 4.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp)),
+            .clip(RoundedCornerShape(8.dp))
+            .padding(bottom = 16.dp),
     ) {
         Row(
             modifier = Modifier
@@ -83,7 +111,7 @@ fun ProfileImage(modifier: Modifier) {
 @Composable
 fun DefaultText(name: String, modifier: Modifier) {
     Text(
-        text = "Hello $name",
+        text = "Hello ${name.capitalize()}",
         color = Purple200,
         modifier = modifier
             .padding(start = 8.dp)
@@ -92,12 +120,4 @@ fun DefaultText(name: String, modifier: Modifier) {
             },
         style = MaterialTheme.typography.body1
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ComposeViewTheme {
-        Greeting("Android")
-    }
 }

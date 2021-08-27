@@ -5,6 +5,6 @@ import javax.inject.Inject
 class PokeRepository @Inject constructor(private val apiService: PokeApiService) {
 
     suspend fun getPokemonList() =
-        makeApiCall(apiService.getPokemonList(1, 1))
+        makeApiCall(apiService.getPokemonList(20, 0))
 
 }

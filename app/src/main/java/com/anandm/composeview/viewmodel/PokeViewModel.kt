@@ -1,6 +1,5 @@
 package com.anandm.composeview.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.anandm.composeview.network.MutableStatus
 import com.anandm.composeview.network.NetworkError
@@ -11,7 +10,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,10 +25,10 @@ class PokeViewModel
     private val backGroundScope = CoroutineScope(Dispatchers.IO)
 
     init {
-//        getPokemonList()
+        getPokemonList()
     }
 
-    fun getPokemonList() {
+    private fun getPokemonList() {
         pokemonStatus postInFlight true
         job = backGroundScope.launch {
             try {
@@ -43,7 +41,6 @@ class PokeViewModel
     }
 
     private fun handleResponse(models: PokemonList) {
-        Log.e("Getpokelist response", models.toString())
         pokemonStatus postSuccess models
     }
 
@@ -52,5 +49,4 @@ class PokeViewModel
             pokemonStatus postFailure it
         } ?: pokemonStatus postFailure error.messageId
     }
-
 }
