@@ -15,7 +15,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class ListViewModel
+class PokeViewModel
 @Inject constructor(
     private val repository: PokeRepository
 ) : ViewModel() {
@@ -27,7 +27,7 @@ class ListViewModel
     private val backGroundScope = CoroutineScope(Dispatchers.IO)
 
     init {
-        getPokemonList()
+//        getPokemonList()
     }
 
     fun getPokemonList() {
