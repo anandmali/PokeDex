@@ -5,7 +5,12 @@ import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.anandm.composeview.network.Status
+import com.anandm.composeview.ui.components.DetailsText
+import com.anandm.composeview.ui.components.Greeting
 import com.anandm.composeview.ui.components.PokeApp
 import com.anandm.composeview.viewmodel.PokeViewModel
 import dagger.hilt.android.AndroidEntryPoint

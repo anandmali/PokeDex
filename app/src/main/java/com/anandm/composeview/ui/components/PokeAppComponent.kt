@@ -21,6 +21,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.anandm.composeview.R
 import com.anandm.composeview.network.data.PokemonData
 import com.anandm.composeview.ui.theme.ComposeViewTheme
@@ -30,28 +34,35 @@ import com.anandm.composeview.ui.theme.Purple700
 @Composable
 fun PokeApp(pokeList: List<PokemonData>) {
     ComposeViewTheme {
-        Surface(color = MaterialTheme.colors.background) {
-            Greeting(pokeList)
+        val navController = rememberNavController()
+
+        NavHost(navController = navController, startDestination = "PokeList") {
+            composable("PokeList") { Greeting(pokeList = pokeList, navController) }
+            composable("PokeDetails") { DetailsText() }
         }
+//            Greeting(pokeList, navController)
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Greeting(pokeList: List<PokemonData>) {
-    LazyColumn(
-        modifier = Modifier
-            .padding(all = 16.dp)
-            .fillMaxWidth(),
-    ) {
-        val groupedPoke = pokeList.groupBy { it.name[0] }
+fun Greeting(pokeList: List<PokemonData>, navController: NavHostController) {
+    Surface(color = MaterialTheme.colors.background) {
 
-        groupedPoke.forEach { (groupedBy, list) ->
-            stickyHeader {
-                CharacterHeader(char = groupedBy, Modifier.fillParentMaxWidth())
-            }
-            items(list) { pokeData ->
-                GreetCard(pokeData.name)
+        LazyColumn(
+            modifier = Modifier
+                .padding(all = 16.dp)
+                .fillMaxWidth(),
+        ) {
+            val groupedPoke = pokeList.groupBy { it.name[0] }
+
+            groupedPoke.forEach { (groupedBy, list) ->
+                stickyHeader {
+                    CharacterHeader(char = groupedBy, Modifier.fillParentMaxWidth())
+                }
+                items(list) { pokeData ->
+                    GreetCard(pokeData.name, navController)
+                }
             }
         }
     }
@@ -66,11 +77,10 @@ fun CharacterHeader(char: Char, modifier: Modifier) {
             .padding(start = 8.dp),
         style = MaterialTheme.typography.body1
     )
-
 }
 
 @Composable
-fun GreetCard(name: String) {
+fun GreetCard(name: String, navController: NavHostController) {
     Card(
         shape = MaterialTheme.shapes.medium,
         elevation = 4.dp,
@@ -82,6 +92,9 @@ fun GreetCard(name: String) {
         Row(
             modifier = Modifier
                 .padding(all = 16.dp)
+                .clickable {
+                    navController.navigate("PokeDetails")
+                }
         ) {
             ProfileImage(
                 Modifier.align(Alignment.CenterVertically)
@@ -120,4 +133,9 @@ fun DefaultText(name: String, modifier: Modifier) {
             },
         style = MaterialTheme.typography.body1
     )
+}
+
+@Composable
+fun DetailsText() {
+    Text(text = "This is details screen")
 }
