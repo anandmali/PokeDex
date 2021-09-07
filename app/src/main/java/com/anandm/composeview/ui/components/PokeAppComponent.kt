@@ -1,6 +1,5 @@
 package com.anandm.composeview.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -21,34 +20,41 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.anandm.composeview.R
-import com.anandm.composeview.network.data.PokemonData
 import com.anandm.composeview.ui.theme.ComposeViewTheme
 import com.anandm.composeview.ui.theme.Purple200
 import com.anandm.composeview.ui.theme.Purple700
+import com.anandm.composeview.viewmodel.PokeViewModel
 
 @Composable
-fun PokeApp(pokeList: List<PokemonData>) {
+fun PokeApp() {
     ComposeViewTheme {
         val navController = rememberNavController()
+        val pokeViewModel: PokeViewModel = viewModel()
 
         NavHost(navController = navController, startDestination = "PokeList") {
-            composable("PokeList") { Greeting(pokeList = pokeList, navController) }
+            composable("PokeList") { Greeting(navController, pokeViewModel) }
             composable("PokeDetails") { DetailsText() }
         }
-//            Greeting(pokeList, navController)
     }
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Greeting(pokeList: List<PokemonData>, navController: NavHostController) {
-    Surface(color = MaterialTheme.colors.background) {
+fun Greeting(
+    navController: NavHostController,
+    pokeViewModel: PokeViewModel
+) {
 
+    val pokeList = pokeViewModel.pokemonListStatus.value
+
+    Surface(color = MaterialTheme.colors.background) {
         LazyColumn(
             modifier = Modifier
                 .padding(all = 16.dp)
@@ -124,18 +130,16 @@ fun ProfileImage(modifier: Modifier) {
 @Composable
 fun DefaultText(name: String, modifier: Modifier) {
     Text(
-        text = "Hello ${name.capitalize()}",
+        text = "Hello ${name.replaceFirstChar { it.uppercase() }}",
         color = Purple200,
-        modifier = modifier
-            .padding(start = 8.dp)
-            .clickable {
-                Log.d("Clicked text => ", name)
-            },
+        modifier = modifier.padding(start = 8.dp),
         style = MaterialTheme.typography.body1
     )
 }
 
 @Composable
 fun DetailsText() {
-    Text(text = "This is details screen")
+    Surface(color = MaterialTheme.colors.background) {
+        Text(text = "This is details screen")
+    }
 }

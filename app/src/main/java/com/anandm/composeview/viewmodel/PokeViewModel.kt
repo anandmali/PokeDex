@@ -1,9 +1,13 @@
 package com.anandm.composeview.viewmodel
 
+import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.anandm.composeview.network.MutableStatus
 import com.anandm.composeview.network.NetworkError
 import com.anandm.composeview.network.PokeRepository
+import com.anandm.composeview.network.data.PokemonData
 import com.anandm.composeview.network.data.PokemonList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +22,10 @@ class PokeViewModel
     private val repository: PokeRepository
 ) : ViewModel() {
 
-    val pokemonStatus = MutableStatus<PokemonList>()
+    private val _pokemonListStatus: MutableState<List<PokemonData>> = mutableStateOf(ArrayList())
+
+    val pokemonListStatus: State<List<PokemonData>>
+        get() = _pokemonListStatus
 
     private var job: Job = Job()
 
@@ -29,7 +36,6 @@ class PokeViewModel
     }
 
     private fun getPokemonList() {
-        pokemonStatus postInFlight true
         job = backGroundScope.launch {
             try {
                 repository.getPokemonList().either(::handlerError, ::handleResponse)
@@ -41,12 +47,10 @@ class PokeViewModel
     }
 
     private fun handleResponse(models: PokemonList) {
-        pokemonStatus postSuccess models
+        _pokemonListStatus.value = models.results
     }
 
     private fun handlerError(error: NetworkError) {
-        error.message?.let {
-            pokemonStatus postFailure it
-        } ?: pokemonStatus postFailure error.messageId
+        Log.e("Handle error", error.message.toString())
     }
 }
