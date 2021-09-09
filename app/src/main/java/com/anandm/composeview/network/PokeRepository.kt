@@ -1,10 +1,8 @@
 package com.anandm.composeview.network
 
-import javax.inject.Inject
+import com.anandm.composeview.network.data.PokeData
 
-class PokeRepository @Inject constructor(private val apiService: PokeApiService) {
+interface PokeRepository {
 
-    suspend fun getPokemonList() =
-        makeApiCall(apiService.getPokemonList(20, 0))
-
+    suspend fun getPokes(): List<PokeData>
 }

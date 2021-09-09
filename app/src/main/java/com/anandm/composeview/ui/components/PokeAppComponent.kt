@@ -52,7 +52,7 @@ fun Greeting(
     pokeViewModel: PokeViewModel
 ) {
 
-    val pokeList = pokeViewModel.pokemonListStatus.value
+    val pokeList = pokeViewModel.pokeListStatus.value
 
     Surface(color = MaterialTheme.colors.background) {
         LazyColumn(

@@ -1,56 +1,35 @@
 package com.anandm.composeview.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.anandm.composeview.network.NetworkError
-import com.anandm.composeview.network.PokeRepository
-import com.anandm.composeview.network.data.PokemonData
-import com.anandm.composeview.network.data.PokemonList
+import androidx.lifecycle.viewModelScope
+import com.anandm.composeview.network.GetPokesUseCase
+import com.anandm.composeview.network.data.PokeData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class PokeViewModel
 @Inject constructor(
-    private val repository: PokeRepository
+    private val getPokesUseCase: GetPokesUseCase
 ) : ViewModel() {
 
-    private val _pokemonListStatus: MutableState<List<PokemonData>> = mutableStateOf(ArrayList())
+    private val _pokeListStatus: MutableState<List<PokeData>> = mutableStateOf(ArrayList())
 
-    val pokemonListStatus: State<List<PokemonData>>
-        get() = _pokemonListStatus
-
-    private var job: Job = Job()
-
-    private val backGroundScope = CoroutineScope(Dispatchers.IO)
+    val pokeListStatus: State<List<PokeData>>
+        get() = _pokeListStatus
 
     init {
-        getPokemonList()
+        getPokeList()
     }
 
-    private fun getPokemonList() {
-        job = backGroundScope.launch {
-            try {
-                repository.getPokemonList().either(::handlerError, ::handleResponse)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-
-    }
-
-    private fun handleResponse(models: PokemonList) {
-        _pokemonListStatus.value = models.results
-    }
-
-    private fun handlerError(error: NetworkError) {
-        Log.e("Handle error", error.message.toString())
+    private fun getPokeList() {
+        getPokesUseCase().onEach {
+            _pokeListStatus.value = it
+        }.launchIn(viewModelScope)
     }
 }
