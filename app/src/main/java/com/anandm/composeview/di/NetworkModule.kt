@@ -2,6 +2,8 @@ package com.anandm.composeview.di
 
 import com.anandm.composeview.BuildConfig
 import com.anandm.composeview.network.PokeApiService
+import com.anandm.composeview.network.PokeRepository
+import com.anandm.composeview.network.PokeRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,6 +49,12 @@ class NetworkModule {
     @Provides
     fun providePokeApiService(retrofit: Retrofit): PokeApiService {
         return retrofit.create(PokeApiService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providePokeRepository(pokeApiService: PokeApiService): PokeRepository {
+        return PokeRepositoryImpl(pokeApiService)
     }
 
 }

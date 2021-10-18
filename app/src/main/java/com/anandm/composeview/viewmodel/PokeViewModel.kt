@@ -13,8 +13,7 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class PokeViewModel
-@Inject constructor(
+class PokeViewModel @Inject constructor(
     private val getPokesUseCase: GetPokesUseCase
 ) : ViewModel() {
 
