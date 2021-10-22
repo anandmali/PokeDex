@@ -1,0 +1,31 @@
+<?php
+if (isset($_GET['name'])) {
+    $name = (string)$_GET['name'];
+    $result = gender($name);
+}
+?>
+<html>
+    <head>
+        <title>города</title>
+    </head>
+    <body>
+    <form method="GET">
+        Введите названиеи города:
+        <input type="text" name="name"/>
+        <input type="submit" name="send" value="ввод"/>
+    </form>
+    </body>
+</html>
+<?php
+    function gender($name):?string
+    {
+        $nameEnds = (mb_substr($name, -1, 1));
+        $res = file(__DIR__ .'/db.txt');
+        foreach ($res as $gorod) {
+            if (mb_strtoupper(mb_substr($nameEnds, 0, 1)) == mb_strtoupper(mb_substr($gorod, 0, 1))) {
+                ?> <p><?=$name?> = <?=$gorod?></p> <?php
+                return  $nameEnds;
+            }
+        }
+    }
+?>
