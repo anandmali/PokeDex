@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -26,7 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.anandm.composeview.R
+import coil.compose.rememberImagePainter
 import com.anandm.composeview.ui.theme.ComposeViewTheme
 import com.anandm.composeview.ui.theme.Purple200
 import com.anandm.composeview.ui.theme.Purple700
@@ -65,7 +64,19 @@ fun PokemonList(
             }
 
             items(sortedList) { pokemonData ->
-                PokemonListItem(name = pokemonData.name) {
+
+                //Create pokemon image url
+                //Move this later to data mapper objects or in repository layer
+                val pokemonId = if (pokemonData.url.endsWith("/")) {
+                    pokemonData.url.dropLast(1).takeLastWhile { it.isDigit() }
+                } else {
+                    pokemonData.url.takeLastWhile { it.isDigit() }
+                }
+
+                val imageUrl =
+                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png"
+
+                PokemonListItem(name = pokemonData.name, imageUrl) {
                     navController.navigate("PokeDetails")
                 }
             }
@@ -76,6 +87,7 @@ fun PokemonList(
 @Composable
 fun PokemonListItem(
     name: String,
+    imageUrl: String,
     onClick: () -> Unit
 ) {
     Card(
@@ -94,7 +106,7 @@ fun PokemonListItem(
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ProfileImage(Modifier.align(Alignment.CenterVertically))
+            ProfileImage(Modifier.align(Alignment.CenterVertically), imageUrl)
             Spacer(modifier = Modifier.padding())
             DefaultText(name)
         }
@@ -102,9 +114,9 @@ fun PokemonListItem(
 }
 
 @Composable
-fun ProfileImage(modifier: Modifier) {
+fun ProfileImage(modifier: Modifier, imageUrl: String) {
     Image(
-        painter = painterResource(id = R.drawable.ic_launcher_background),
+        painter = rememberImagePainter(data = imageUrl),
         contentDescription = "Profile image",
         modifier = modifier
             .size(50.dp)
@@ -140,6 +152,6 @@ fun DetailsText() {
 private fun ListItemPreview() {
     PokemonListItem(
         name = "Beedrill",
-        onClick = {}
-    )
+        imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${1}.png"
+    ) {}
 }

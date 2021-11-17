@@ -76,4 +76,6 @@ dependencies {
 
     //for testing retrofit.
     testImplementation("com.squareup.okhttp3:mockwebserver:4.7.2")
+
+    implementation("io.coil-kt:coil-compose:1.4.0")
 }
