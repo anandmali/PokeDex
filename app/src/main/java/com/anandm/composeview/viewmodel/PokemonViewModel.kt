@@ -5,22 +5,22 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.anandm.composeview.network.GetPokesUseCase
-import com.anandm.composeview.network.data.PokeData
+import com.anandm.composeview.network.GetPokemonUseCase
+import com.anandm.composeview.network.data.PokemonData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class PokeViewModel @Inject constructor(
-    private val getPokesUseCase: GetPokesUseCase
+class PokemonViewModel @Inject constructor(
+    private val getPokesUseCase: GetPokemonUseCase
 ) : ViewModel() {
 
-    private val _pokeListStatus: MutableState<List<PokeData>> = mutableStateOf(ArrayList())
+    private val _pokemonListStatus: MutableState<List<PokemonData>> = mutableStateOf(ArrayList())
 
-    val pokeListStatus: State<List<PokeData>>
-        get() = _pokeListStatus
+    val pokemonListStatus: State<List<PokemonData>>
+        get() = _pokemonListStatus
 
     init {
         getPokeList()
@@ -28,7 +28,7 @@ class PokeViewModel @Inject constructor(
 
     private fun getPokeList() {
         getPokesUseCase().onEach {
-            _pokeListStatus.value = it
+            _pokemonListStatus.value = it
         }.launchIn(viewModelScope)
     }
 }

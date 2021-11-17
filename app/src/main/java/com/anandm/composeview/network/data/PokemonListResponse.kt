@@ -1,13 +1,13 @@
 package com.anandm.composeview.network.data
 
-data class PokeList(
+data class PokemonListData(
     val count: Int,
     val next: String,
     val previous: Any,
-    val results: List<PokeData>
+    val results: List<PokemonData>
 )
 
-data class PokeData(
+data class PokemonData(
     val name: String,
     val url: String
 )

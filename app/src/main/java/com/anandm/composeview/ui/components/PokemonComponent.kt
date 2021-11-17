@@ -1,6 +1,5 @@
 package com.anandm.composeview.ui.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -19,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -29,30 +30,28 @@ import com.anandm.composeview.R
 import com.anandm.composeview.ui.theme.ComposeViewTheme
 import com.anandm.composeview.ui.theme.Purple200
 import com.anandm.composeview.ui.theme.Purple700
-import com.anandm.composeview.viewmodel.PokeViewModel
+import com.anandm.composeview.viewmodel.PokemonViewModel
 
 @Composable
-fun PokeApp() {
+fun PokemonApp() {
     ComposeViewTheme {
         val navController = rememberNavController()
-        val pokeViewModel: PokeViewModel = viewModel()
+        val pokemonViewModel: PokemonViewModel = viewModel()
 
         NavHost(navController = navController, startDestination = "PokeList") {
-            composable("PokeList") { Greeting(navController, pokeViewModel) }
+            composable("PokeList") { PokemonList(navController, pokemonViewModel) }
             composable("PokeDetails") { DetailsText() }
         }
     }
-
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Greeting(
+fun PokemonList(
     navController: NavHostController,
-    pokeViewModel: PokeViewModel
+    pokemonViewModel: PokemonViewModel
 ) {
 
-    val pokeList = pokeViewModel.pokeListStatus.value
+    val pokeList = pokemonViewModel.pokemonListStatus.value
 
     Surface(color = MaterialTheme.colors.background) {
         LazyColumn(
@@ -60,14 +59,14 @@ fun Greeting(
                 .padding(all = 16.dp)
                 .fillMaxWidth(),
         ) {
-            val groupedPoke = pokeList.groupBy { it.name[0] }
 
-            groupedPoke.forEach { (groupedBy, list) ->
-                stickyHeader {
-                    CharacterHeader(char = groupedBy, Modifier.fillParentMaxWidth())
-                }
-                items(list) { pokeData ->
-                    GreetCard(pokeData.name, navController)
+            val sortedList = pokeList.sortedBy {
+                it.name
+            }
+
+            items(sortedList) { pokemonData ->
+                PokemonListItem(name = pokemonData.name) {
+                    navController.navigate("PokeDetails")
                 }
             }
         }
@@ -75,18 +74,10 @@ fun Greeting(
 }
 
 @Composable
-fun CharacterHeader(char: Char, modifier: Modifier) {
-    Text(
-        text = char.toString(),
-        color = Purple200,
-        modifier = modifier
-            .padding(start = 8.dp),
-        style = MaterialTheme.typography.body1
-    )
-}
-
-@Composable
-fun GreetCard(name: String, navController: NavHostController) {
+fun PokemonListItem(
+    name: String,
+    onClick: () -> Unit
+) {
     Card(
         shape = MaterialTheme.shapes.medium,
         elevation = 4.dp,
@@ -99,17 +90,13 @@ fun GreetCard(name: String, navController: NavHostController) {
             modifier = Modifier
                 .padding(all = 16.dp)
                 .clickable {
-                    navController.navigate("PokeDetails")
-                }
+                    onClick()
+                },
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            ProfileImage(
-                Modifier.align(Alignment.CenterVertically)
-            )
+            ProfileImage(Modifier.align(Alignment.CenterVertically))
             Spacer(modifier = Modifier.padding())
-            DefaultText(
-                name,
-                Modifier.align(Alignment.CenterVertically)
-            )
+            DefaultText(name)
         }
     }
 }
@@ -127,19 +114,32 @@ fun ProfileImage(modifier: Modifier) {
     )
 }
 
+@Preview("Name", showBackground = true)
 @Composable
-fun DefaultText(name: String, modifier: Modifier) {
+fun DefaultText(
+    @PreviewParameter(NamePreviewParameter::class, limit = 1) name: String
+) {
     Text(
-        text = "Hello ${name.replaceFirstChar { it.uppercase() }}",
+        text = name.replaceFirstChar { it.uppercase() },
         color = Purple200,
-        modifier = modifier.padding(start = 8.dp),
+        modifier = Modifier.padding(start = 8.dp, end = 8.dp),
         style = MaterialTheme.typography.body1
     )
 }
 
+@Preview("Pokemon list description")
 @Composable
 fun DetailsText() {
     Surface(color = MaterialTheme.colors.background) {
         Text(text = "This is details screen")
     }
+}
+
+@Preview(name = "Course list item")
+@Composable
+private fun ListItemPreview() {
+    PokemonListItem(
+        name = "Beedrill",
+        onClick = {}
+    )
 }

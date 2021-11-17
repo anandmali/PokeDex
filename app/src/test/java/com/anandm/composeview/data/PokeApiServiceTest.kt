@@ -2,8 +2,8 @@ package com.anandm.composeview.data
 
 import com.anandm.composeview.enqueueResponse
 import com.anandm.composeview.mockPokeData
-import com.anandm.composeview.network.PokeApiService
-import com.anandm.composeview.network.PokeRepositoryImpl
+import com.anandm.composeview.network.PokemonApiService
+import com.anandm.composeview.network.PokemonRepositoryImpl
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -13,7 +13,7 @@ import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class PokeRepositoryTest {
+class PokemonRepositoryTest {
 
     private val mockWebServer = MockWebServer()
 
@@ -25,9 +25,9 @@ class PokeRepositoryTest {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val pokeApiService = retrofit.create(PokeApiService::class.java)
+    private val pokeApiService = retrofit.create(PokemonApiService::class.java)
 
-    private val sut = PokeRepositoryImpl(pokeApiService)
+    private val sut = PokemonRepositoryImpl(pokeApiService)
 
     @After
     fun tearDown() {
