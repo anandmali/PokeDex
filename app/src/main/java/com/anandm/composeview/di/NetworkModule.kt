@@ -1,9 +1,7 @@
 package com.anandm.composeview.di
 
 import com.anandm.composeview.BuildConfig
-import com.anandm.composeview.network.PokemonApiService
-import com.anandm.composeview.network.PokemonRepository
-import com.anandm.composeview.network.PokemonRepositoryImpl
+import com.anandm.composeview.network.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,8 +51,15 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun providePokeRepository(pokemonApiService: PokemonApiService): PokemonRepository {
-        return PokemonRepositoryImpl(pokemonApiService)
+    fun providePokeRepository(
+        pokemonApiService: PokemonApiService,
+        pokemonListMapperImpl: PokemonListMapperImpl
+    ): PokemonRepository {
+        return PokemonRepositoryImpl(pokemonApiService, pokemonListMapperImpl)
     }
+
+    @Singleton
+    @Provides
+    fun providePokemonListMapper(): PokemonListMapperImpl = PokemonListMapperImpl()
 
 }

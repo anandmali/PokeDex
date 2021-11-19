@@ -1,7 +1,6 @@
 package com.anandm.composeview.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,7 +27,6 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import com.anandm.composeview.ui.theme.ComposeViewTheme
 import com.anandm.composeview.ui.theme.Purple200
-import com.anandm.composeview.ui.theme.Purple700
 import com.anandm.composeview.viewmodel.PokemonViewModel
 
 @Composable
@@ -64,19 +62,7 @@ fun PokemonList(
             }
 
             items(sortedList) { pokemonData ->
-
-                //Create pokemon image url
-                //Move this later to data mapper objects or in repository layer
-                val pokemonId = if (pokemonData.url.endsWith("/")) {
-                    pokemonData.url.dropLast(1).takeLastWhile { it.isDigit() }
-                } else {
-                    pokemonData.url.takeLastWhile { it.isDigit() }
-                }
-
-                val imageUrl =
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png"
-
-                PokemonListItem(name = pokemonData.name, imageUrl) {
+                PokemonListItem(name = pokemonData.name, pokemonData.url) {
                     navController.navigate("PokeDetails")
                 }
             }
@@ -122,7 +108,6 @@ fun ProfileImage(modifier: Modifier, imageUrl: String) {
             .size(50.dp)
             .clipToBounds()
             .clip(CircleShape)
-            .border(1.5.dp, Purple700, CircleShape)
     )
 }
 
