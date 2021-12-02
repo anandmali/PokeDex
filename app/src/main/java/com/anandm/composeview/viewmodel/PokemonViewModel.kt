@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anandm.composeview.network.GetPokemonUseCase
-import com.anandm.composeview.network.data.PokemonData
+import com.anandm.composeview.network.data.PokemonViewDTO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -17,9 +17,9 @@ class PokemonViewModel @Inject constructor(
     private val getPokesUseCase: GetPokemonUseCase
 ) : ViewModel() {
 
-    private val _pokemonListStatus: MutableState<List<PokemonData>> = mutableStateOf(ArrayList())
+    private val _pokemonListStatus: MutableState<List<PokemonViewDTO>> = mutableStateOf(ArrayList())
 
-    val pokemonListStatus: State<List<PokemonData>>
+    val pokemonListStatus: State<List<PokemonViewDTO>>
         get() = _pokemonListStatus
 
     init {
@@ -27,7 +27,8 @@ class PokemonViewModel @Inject constructor(
     }
 
     private fun getPokeList() {
-        getPokesUseCase().onEach {
+        val res = getPokesUseCase()
+        res.onEach {
             _pokemonListStatus.value = it
         }.launchIn(viewModelScope)
     }

@@ -1,19 +1,19 @@
 package com.anandm.composeview.network
 
-import com.anandm.composeview.network.data.PokemonData
+import com.anandm.composeview.network.data.PokemonViewDTO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetPokemonUseCase @Inject constructor(
-    private val pokemonRepository: PokemonRepository
+    private val remoteRepository: RemoteRepository
 ) {
 
-    operator fun invoke(): Flow<List<PokemonData>> = flow {
+    operator fun invoke(): Flow<List<PokemonViewDTO>> = flow {
         try {
-            emit(pokemonRepository.getPokes())
+            emit(remoteRepository.getPokes())
         } catch (exception: Exception) {
-            emit(emptyArray<PokemonData>().asList())
+            emit(emptyArray<PokemonViewDTO>().asList())
         }
     }
 }

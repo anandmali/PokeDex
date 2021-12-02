@@ -1,11 +1,11 @@
 package com.anandm.composeview.repository
 
 import com.anandm.composeview.mockPokeData
-import com.anandm.composeview.network.PokemonRepository
-import com.anandm.composeview.network.data.PokemonData
+import com.anandm.composeview.network.RemoteRepository
+import com.anandm.composeview.network.data.PokemonDTO
 
-class FakePokemonRepository : PokemonRepository {
-    override suspend fun getPokes(): List<PokemonData> {
+class FakePokemonRepository : RemoteRepository {
+    override suspend fun getPokes(): List<PokemonDTO> {
         return listOf(mockPokeData())
     }
 }

@@ -2,6 +2,7 @@ package com.anandm.composeview.di
 
 import com.anandm.composeview.BuildConfig
 import com.anandm.composeview.network.*
+import com.anandm.composeview.network.mapper.PokemonDomainMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,21 +46,21 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun providePokeApiService(retrofit: Retrofit): PokemonApiService {
-        return retrofit.create(PokemonApiService::class.java)
+    fun providePokeApiService(retrofit: Retrofit): ApiService {
+        return retrofit.create(ApiService::class.java)
     }
 
     @Singleton
     @Provides
     fun providePokeRepository(
-        pokemonApiService: PokemonApiService,
-        pokemonListMapperImpl: PokemonListMapperImpl
-    ): PokemonRepository {
-        return PokemonRepositoryImpl(pokemonApiService, pokemonListMapperImpl)
+        apiService: ApiService,
+        pokemonDomainMapper: PokemonDomainMapper
+    ): RemoteRepository {
+        return RemoteRepositoryImpl(apiService, pokemonDomainMapper)
     }
 
     @Singleton
     @Provides
-    fun providePokemonListMapper(): PokemonListMapperImpl = PokemonListMapperImpl()
+    fun providePokemonListMapper(): PokemonDomainMapper = PokemonDomainMapper()
 
 }
