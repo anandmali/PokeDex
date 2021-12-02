@@ -23,10 +23,10 @@ class PokemonListMapperImpl : PokemonListMapper<PokemonListData, List<PokemonDat
             val imageUrl =
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png"
 
-            pokemonList.add(PokemonData(domainModel.name, imageUrl))
+            pokemonList.add(PokemonData(domainModel.name, domainModel.url, imageUrl))
 
         }
-        return emptyList()
+        return pokemonList
     }
 
 }

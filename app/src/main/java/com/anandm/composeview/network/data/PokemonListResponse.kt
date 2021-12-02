@@ -9,5 +9,6 @@ data class PokemonListData(
 
 data class PokemonData(
     val name: String,
-    val url: String
+    val url: String,
+    val image_url: String
 )
