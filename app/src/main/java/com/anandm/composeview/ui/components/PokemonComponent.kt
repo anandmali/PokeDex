@@ -7,10 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,23 +48,34 @@ fun PokemonList(
     val pokeList = pokemonViewModel.pokemonListStatus.value
 
     Surface(color = MaterialTheme.colors.background) {
-        LazyColumn(
-            modifier = Modifier
-                .padding(all = 16.dp)
-                .fillMaxWidth(),
+        Scaffold(
+            topBar = { TopBar() }
         ) {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(all = 16.dp)
+                    .fillMaxWidth(),
+            ) {
 
-            val sortedList = pokeList.sortedBy {
-                it.name
-            }
+                val sortedList = pokeList.sortedBy {
+                    it.name
+                }
 
-            items(sortedList) { pokemonData ->
-                PokemonListItem(name = pokemonData.name, pokemonData.image_url) {
-                    navController.navigate("PokeDetails")
+                items(sortedList) { pokemonData ->
+                    PokemonListItem(name = pokemonData.name, pokemonData.image_url) {
+                        navController.navigate("PokeDetails")
+                    }
                 }
             }
         }
     }
+}
+
+@Composable
+fun TopBar() {
+    TopAppBar(
+        title = { Text(text = "Pokemon") }
+    )
 }
 
 @Composable
