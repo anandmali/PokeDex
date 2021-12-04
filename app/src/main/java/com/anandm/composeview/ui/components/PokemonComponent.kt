@@ -1,5 +1,6 @@
 package com.anandm.composeview.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +23,7 @@ import coil.compose.rememberImagePainter
 import coil.size.Scale
 import com.anandm.composeview.R
 import com.anandm.composeview.ui.theme.ComposeViewTheme
+import com.anandm.composeview.ui.theme.Purple700
 import com.anandm.composeview.viewmodel.PokemonViewModel
 
 @Composable
@@ -91,6 +92,7 @@ fun PokemonListItem(
             .fillMaxWidth()
             .height(100.dp)
             .padding(bottom = 8.dp),
+        border = BorderStroke(1.dp, Purple700),
     ) {
         Row(
             modifier = Modifier
@@ -128,8 +130,8 @@ fun ProfileName(name: String) {
         text = name,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 8.dp),
-        style = MaterialTheme.typography.h4,
+            .padding(start = 8.dp, bottom = 8.dp),
+        style = MaterialTheme.typography.h5,
         textAlign = TextAlign.Justify
     )
 }
