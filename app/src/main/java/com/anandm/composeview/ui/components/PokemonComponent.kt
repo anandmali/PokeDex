@@ -5,16 +5,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -22,8 +20,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
+import coil.size.Scale
+import com.anandm.composeview.R
 import com.anandm.composeview.ui.theme.ComposeViewTheme
-import com.anandm.composeview.ui.theme.Purple200
 import com.anandm.composeview.viewmodel.PokemonViewModel
 
 @Composable
@@ -53,8 +52,9 @@ fun PokemonList(
         ) {
             LazyColumn(
                 modifier = Modifier
-                    .padding(all = 16.dp)
+                    .padding(start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
+                contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)
             ) {
 
                 val sortedList = pokeList.sortedBy {
@@ -89,50 +89,51 @@ fun PokemonListItem(
         elevation = 4.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .padding(bottom = 16.dp),
+            .height(100.dp)
+            .padding(bottom = 8.dp),
     ) {
         Row(
             modifier = Modifier
-                .padding(all = 16.dp)
                 .clickable {
                     onClick()
                 },
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Bottom
         ) {
-            ProfileImage(Modifier.align(Alignment.CenterVertically), imageUrl)
-            Spacer(modifier = Modifier.padding())
-            DefaultText(name)
+            ProfileImage(imageUrl)
+            ProfileName(name)
         }
     }
 }
 
 @Composable
-fun ProfileImage(modifier: Modifier, imageUrl: String) {
+fun ProfileImage(imageUrl: String) {
     Image(
-        painter = rememberImagePainter(data = imageUrl),
+        painter = rememberImagePainter(data = imageUrl, builder = {
+            placeholder(R.drawable.ic_launcher_background)
+            scale(Scale.FIT)
+        }),
         contentDescription = "Profile image",
-        modifier = modifier
-            .size(50.dp)
-            .clipToBounds()
-            .clip(CircleShape)
+        modifier = Modifier
+            .height(100.dp)
+            .width(100.dp)
+            .fillMaxHeight()
+            .fillMaxWidth(),
+        contentScale = ContentScale.Fit
     )
 }
 
-@Preview("Name", showBackground = true)
 @Composable
-fun DefaultText(
-    @PreviewParameter(NamePreviewParameter::class, limit = 1) name: String
-) {
+fun ProfileName(name: String) {
     Text(
-        text = name.replaceFirstChar { it.uppercase() },
-        color = Purple200,
-        modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-        style = MaterialTheme.typography.body1
+        text = name,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp),
+        style = MaterialTheme.typography.h4,
+        textAlign = TextAlign.Justify
     )
 }
 
-@Preview("Pokemon list description")
 @Composable
 fun DetailsText() {
     Surface(color = MaterialTheme.colors.background) {
@@ -140,11 +141,29 @@ fun DetailsText() {
     }
 }
 
-@Preview(name = "Course list item")
+@Preview(name = "Profile Image")
+@Composable
+fun ProfileImagePreview() {
+    Surface {
+        ProfileImage(
+            imageUrl = ""
+        )
+    }
+}
+
+@Preview(name = "Profile Name")
+@Composable
+fun ProfileNamePreview() {
+    Surface {
+        ProfileName(name = "Profile Name")
+    }
+}
+
+@Preview(name = "List Item")
 @Composable
 private fun ListItemPreview() {
     PokemonListItem(
-        name = "Beedrill",
-        imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${1}.png"
+        name = "Pokemon",
+        imageUrl = ""
     ) {}
 }
