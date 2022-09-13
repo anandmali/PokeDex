@@ -45,13 +45,7 @@ class PokemonRepositoryTest {
         runBlocking {
             val actual = sut.getPokes()
 
-            val expected = listOf(
-                mockPokeViewData(
-                    name = "Bulbasaur",
-                    url = "https://pokeapi.co/api/v2/pokemon/1/",
-                    link = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-                )
-            )
+            val expected = listOf(mockPokeViewData())
 
             assertEquals(expected, actual)
         }
