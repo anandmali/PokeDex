@@ -1,10 +1,11 @@
 package com.anandm.composeview.data
 
 import com.anandm.composeview.enqueueResponse
-import com.anandm.composeview.mockPokeData
-import com.anandm.composeview.network.PokemonApiService
-import com.anandm.composeview.network.PokemonRepositoryImpl
-import com.anandm.composeview.network.data.PokemonData
+import com.anandm.composeview.mockPokeViewData
+import com.anandm.composeview.network.ApiService
+import com.anandm.composeview.network.RemoteRepositoryImpl
+import com.anandm.composeview.network.data.PokemonDTO
+import com.anandm.composeview.network.mapper.PokemonDomainMapper
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -26,9 +27,11 @@ class PokemonRepositoryTest {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val pokeApiService = retrofit.create(PokemonApiService::class.java)
+    private val pokeApiService = retrofit.create(ApiService::class.java)
 
-    private val sut = PokemonRepositoryImpl(pokeApiService)
+    private val mapper = PokemonDomainMapper()
+
+    private val sut = RemoteRepositoryImpl(pokeApiService, mapper)
 
     @After
     fun tearDown() {
@@ -43,9 +46,10 @@ class PokemonRepositoryTest {
             val actual = sut.getPokes()
 
             val expected = listOf(
-                mockPokeData(
-                    name = "bulbasaur",
-                    url = "https://pokeapi.co/api/v2/pokemon/1/"
+                mockPokeViewData(
+                    name = "Bulbasaur",
+                    url = "https://pokeapi.co/api/v2/pokemon/1/",
+                    link = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
                 )
             )
 
@@ -59,9 +63,7 @@ class PokemonRepositoryTest {
 
         runBlocking {
             val actual = sut.getPokes()
-            assertEquals(emptyList<PokemonData>(), actual)
+            assertEquals(emptyList<PokemonDTO>(), actual)
         }
     }
 }
-
-
