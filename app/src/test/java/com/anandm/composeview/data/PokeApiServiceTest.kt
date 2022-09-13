@@ -39,7 +39,7 @@ class PokemonRepositoryTest {
     }
 
     @Test
-    fun `should fetch movies correctly given 200 response`() {
+    fun `should pokemon list correctly given 200 response`() {
         mockWebServer.enqueueResponse("pokemon-list.json", 200)
 
         runBlocking {
