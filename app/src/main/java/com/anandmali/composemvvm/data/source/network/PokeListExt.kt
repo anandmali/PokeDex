@@ -3,7 +3,7 @@ package com.anandmali.composemvvm.data.source.network
 data class PokemonViewDTO(
     val name: String,
     val url: String,
-    val image_url: String
+    val imageUrl: String
 )
 
 fun Pokemon.toViewData(): PokemonViewDTO {
@@ -11,7 +11,7 @@ fun Pokemon.toViewData(): PokemonViewDTO {
         PokemonViewDTO(
             name = this.name.replaceFirstChar { it.uppercase() },
             url = this.url,
-            image_url = createImageUrl(this.url)
+            imageUrl = createImageUrl(this.url)
         )
     }
 }

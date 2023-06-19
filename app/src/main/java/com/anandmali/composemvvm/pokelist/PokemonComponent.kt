@@ -78,7 +78,7 @@ fun PokemonList(
                     }
 
                     items(sortedList) { pokemonData ->
-                        PokemonListItem(name = pokemonData.name, pokemonData.image_url) {
+                        PokemonListItem(name = pokemonData.name, pokemonData.imageUrl) {
                             navController.navigate("PokeDetails")
                         }
                     }

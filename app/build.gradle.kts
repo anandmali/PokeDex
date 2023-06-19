@@ -83,12 +83,13 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     kaptAndroidTest(libs.hilt.compiler)
 
-    //Network
+    //Network retrofit and okHTTP testing
     implementation(libs.retrofit.core)
     implementation(libs.gson.convertor)
-
     implementation(libs.okhttp.loggin)
+    implementation(libs.okhttp.mock.server)
 
     implementation(libs.navigation)
     implementation(libs.coil)
+
 }
