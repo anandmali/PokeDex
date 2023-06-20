@@ -6,7 +6,7 @@ import com.anandmali.composemvvm.data.source.network.PokemonViewDTO
 import com.anandmali.composemvvm.data.source.network.toViewData
 import javax.inject.Inject
 
-private const val LIMIT = 20
+private const val LIMIT = 100
 private const val OFFSET = 0
 
 class PokeRepositoryImpl @Inject constructor(private val pokeApi: PokeApi) : PokeRepository {
@@ -25,6 +25,6 @@ class PokeRepositoryImpl @Inject constructor(private val pokeApi: PokeApi) : Pok
     }
 
     private fun mapPokemonList(result: List<Pokemon>): List<PokemonViewDTO> {
-        return result.map { it.toViewData() }
+        return result.map { it.toViewData() }.sortedBy { it.id }
     }
 }

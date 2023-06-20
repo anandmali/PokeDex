@@ -3,6 +3,7 @@
 package com.anandmali.composemvvm.pokelist
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,6 +38,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.anandmali.composemvvm.R
+import com.anandmali.composemvvm.data.source.network.PokemonViewDTO
 import com.anandmali.composemvvm.ui.theme.ComposeMVVMTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,13 +74,8 @@ fun PokemonList(
                         .fillMaxWidth(),
                     contentPadding = innerPadding
                 ) {
-
-                    val sortedList = pokeList.sortedBy {
-                        it.name
-                    }
-
-                    items(sortedList) { pokemonData ->
-                        PokemonListItem(name = pokemonData.name, pokemonData.imageUrl) {
+                    items(pokeList) { pokemonData ->
+                        PokemonListItem(pokemonData) {
                             navController.navigate("PokeDetails")
                         }
                     }
@@ -99,8 +96,7 @@ fun TopBar() {
 
 @Composable
 fun PokemonListItem(
-    name: String,
-    imageUrl: String,
+    poke: PokemonViewDTO,
     onClick: () -> Unit
 ) {
     Box(
@@ -116,18 +112,27 @@ fun PokemonListItem(
                 .height(80.dp)
                 .align(Alignment.BottomEnd),
         ) {
-            Text(
-                text = name,
+            Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(20.dp),
-                style = MaterialTheme.typography.headlineMedium
-            )
+                    .padding(10.dp),
+            ) {
+                Text(
+                    text = "#${poke.id}",
+                    style = MaterialTheme.typography.labelLarge
+                )
+
+                Text(
+                    text = poke.name,
+                    modifier = Modifier.fillMaxHeight(),
+                    style = MaterialTheme.typography.headlineLarge
+                )
+            }
         }
 
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl)
+                .data(poke.imageUrl)
                 .build(),
             error = painterResource(R.drawable.baseline_catching_pokemon_24),
             contentDescription = stringResource(R.string.description),
@@ -152,7 +157,11 @@ fun DetailsText() {
 @Composable
 private fun ListItemPreview() {
     PokemonListItem(
-        name = "Pokemon",
-        imageUrl = ""
+        PokemonViewDTO(
+            5,
+            name = "Pokemon",
+            url = "",
+            imageUrl = ""
+        )
     ) {}
 }
