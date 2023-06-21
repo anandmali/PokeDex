@@ -13,7 +13,7 @@ import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class PokemonRepositoryTest {
+class PokeDetailsRepositoryTest {
 
     private val mockWebServer = MockWebServer()
 

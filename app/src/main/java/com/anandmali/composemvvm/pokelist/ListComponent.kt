@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package com.anandmali.composemvvm.pokelist
 
@@ -30,39 +30,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.anandmali.composemvvm.R
 import com.anandmali.composemvvm.data.source.network.PokemonViewDTO
-import com.anandmali.composemvvm.ui.theme.ComposeMVVMTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PokemonApp() {
-    ComposeMVVMTheme {
-        val navController = rememberNavController()
-        val pokemonViewModel: PokemonViewModel = viewModel()
-
-        NavHost(navController = navController, startDestination = "PokeList") {
-            composable("PokeList") { PokemonList(navController, pokemonViewModel) }
-            composable("PokeDetails") { DetailsText() }
-        }
-    }
-}
-
-@ExperimentalMaterial3Api
-@Composable
-fun PokemonList(
+fun ListScreen(
     navController: NavHostController,
-    pokemonViewModel: PokemonViewModel
+    listViewModel: ListViewModel = hiltViewModel()
 ) {
 
-    val pokeList = pokemonViewModel.pokemonListStatus.value
+    val pokeList = listViewModel.pokemonListStatus.value
 
     Surface(color = MaterialTheme.colorScheme.background) {
         Scaffold(
@@ -76,7 +57,7 @@ fun PokemonList(
                 ) {
                     items(pokeList) { pokemonData ->
                         PokemonListItem(pokemonData) {
-                            navController.navigate("PokeDetails")
+                            navController.navigate("pokeDetails/${pokemonData.name}")
                         }
                     }
                 }
@@ -143,13 +124,6 @@ fun PokemonListItem(
                 .clip(CircleShape)
                 .padding(8.dp)
         )
-    }
-}
-
-@Composable
-fun DetailsText() {
-    Surface(color = MaterialTheme.colorScheme.background) {
-        Text(text = "This is details screen")
     }
 }
 

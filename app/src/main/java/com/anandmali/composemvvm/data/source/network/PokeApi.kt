@@ -1,7 +1,10 @@
 package com.anandmali.composemvvm.data.source.network
 
+import com.anandmali.composemvvm.data.source.network.response.PokeDetailsResponse
+import com.anandmali.composemvvm.data.source.network.response.PokeList
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface PokeApi {
@@ -11,5 +14,10 @@ interface PokeApi {
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
     ): Response<PokeList>
+
+    @GET("pokemon/{name}")
+    suspend fun getPokemonInfo(
+        @Path("name") name: String
+    ): PokeDetailsResponse
 
 }

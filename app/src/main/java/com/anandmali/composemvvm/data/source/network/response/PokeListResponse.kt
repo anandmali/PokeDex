@@ -1,4 +1,4 @@
-package com.anandmali.composemvvm.data.source.network
+package com.anandmali.composemvvm.data.source.network.response
 
 data class PokeList(
     val count: Int,

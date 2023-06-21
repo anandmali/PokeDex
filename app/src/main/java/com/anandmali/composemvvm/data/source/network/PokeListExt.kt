@@ -1,5 +1,7 @@
 package com.anandmali.composemvvm.data.source.network
 
+import com.anandmali.composemvvm.data.source.network.response.Pokemon
+
 data class PokemonViewDTO(
     val id: Int,
     val name: String,
@@ -19,7 +21,7 @@ fun Pokemon.toViewData(): PokemonViewDTO {
     }
 }
 
-private fun createImageUrl(index: Int): String {
+fun createImageUrl(index: Int): String {
     return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$index.png"
 }
 
