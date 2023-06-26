@@ -3,6 +3,7 @@ package com.anandmali.composemvvm
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import com.anandmali.composemvvm.data.source.network.PokemonViewDTO
 import com.anandmali.composemvvm.pokelist.PokemonListItem
 import org.junit.Rule
 import org.junit.Test
@@ -21,8 +22,12 @@ class ListItemTest {
     fun should_render_pokemon_item(): Unit = with(composeTestRule) {
         composeTestRule.setContent {
             PokemonListItem(
-                name = name,
-                imageUrl = imageUrl
+                PokemonViewDTO(
+                    5,
+                    name = "Pokemon",
+                    url = "",
+                    imageUrl = ""
+                )
             ) {}
         }
         onNodeWithText(name, useUnmergedTree = true).assertIsDisplayed()

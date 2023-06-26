@@ -7,6 +7,7 @@ internal fun mockPokeViewData(
     url: String = "https://pokeapi.co/api/v2/pokemon/1/",
     link: String = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
 ) = PokemonViewDTO(
+    0,
     name,
     url,
     link

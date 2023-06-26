@@ -92,4 +92,5 @@ dependencies {
     implementation(libs.navigation)
     implementation(libs.coil)
 
+    implementation(libs.hilt.nav.compose)
 }
