@@ -1,6 +1,7 @@
-package com.anandmali.composemvvm.data.source.network
+package com.anandmali.composemvvm.network
 
 import com.anandmali.composemvvm.data.repository.PokeRepositoryImpl
+import com.anandmali.composemvvm.data.source.network.PokeApi
 import com.anandmali.composemvvm.utils.enqueueResponse
 import com.anandmali.composemvvm.utils.mockPokeViewData
 import junit.framework.TestCase.assertEquals
