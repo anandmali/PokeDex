@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.anandmali.composemvvm"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.anandmali.composemvvm"
@@ -88,9 +88,12 @@ dependencies {
     implementation(libs.gson.convertor)
     implementation(libs.okhttp.loggin)
     implementation(libs.okhttp.mock.server)
+    implementation(libs.okhttp.profiler)
 
     implementation(libs.navigation)
     implementation(libs.coil)
 
     implementation(libs.hilt.nav.compose)
+
+    implementation(libs.paging.compose)
 }

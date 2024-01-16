@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.0-alpha07"
+agp = "8.4.0-alpha03"
 kotlin = "1.8.10"
 core-ktx = "1.9.0"
 junit = "4.13.2"
@@ -12,10 +12,12 @@ hilt = "2.44.2"
 hiltExt = "1.0.0"
 retrofit = "2.9.0"
 okhttp-loggin = "4.2.1"
+okhttp-profiler = "1.0.8"
 navigation = "2.6.0"
 coil = "2.3.0"
 mock-server = "4.7.2"
 hilt-nav-compose = "1.0.0"
+paging_version = "3.3.0-alpha02"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -43,7 +45,9 @@ okhttp-loggin = { group = "com.squareup.okhttp3", name = "logging-interceptor", 
 navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 okhttp-mock-server = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mock-server" }
+okhttp-profiler = { group = "com.localebro", name = "okhttpprofiler", version.ref = "okhttp-profiler" }
 hilt-nav-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-nav-compose" }
+paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging_version" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

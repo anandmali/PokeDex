@@ -1,11 +1,13 @@
 package com.anandmali.composemvvm.data.repository
 
-import com.anandmali.composemvvm.data.source.network.PokemonViewDTO
-import com.anandmali.composemvvm.data.source.network.response.PokeDetailsResponse
+import androidx.paging.PagingData
 import com.anandmali.composemvvm.data.Resource
+import com.anandmali.composemvvm.data.source.network.response.PokeDetailsResponse
+import com.anandmali.composemvvm.data.source.network.response.Pokemon
+import kotlinx.coroutines.flow.Flow
 
 interface PokeRepository {
-    suspend fun getPokeList(): List<PokemonViewDTO>
+     fun getPokeList(): Flow<PagingData<Pokemon>>
 
     suspend fun getPokemonInfo(pokemonName: String): Resource<PokeDetailsResponse>
 }

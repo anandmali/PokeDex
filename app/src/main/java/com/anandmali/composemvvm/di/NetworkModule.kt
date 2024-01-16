@@ -1,6 +1,7 @@
 package com.anandmali.composemvvm.di
 
 import com.anandmali.composemvvm.BuildConfig
+import com.anandmali.composemvvm.data.repository.ListPagingSource
 import com.anandmali.composemvvm.data.repository.PokeRepository
 import com.anandmali.composemvvm.data.repository.PokeRepositoryImpl
 import com.anandmali.composemvvm.data.source.network.PokeApi
@@ -54,9 +55,16 @@ class NetworkModule {
     @Singleton
     @Provides
     fun providePokeRepository(
-        apiService: PokeApi
+        apiService: PokeApi,
+        pagingSource: ListPagingSource
     ): PokeRepository {
-        return PokeRepositoryImpl(apiService)
+        return PokeRepositoryImpl(apiService, pagingSource)
+    }
+
+    @Singleton
+    @Provides
+    fun providePagingSource(apiService: PokeApi): ListPagingSource {
+        return ListPagingSource(apiService)
     }
 
 }

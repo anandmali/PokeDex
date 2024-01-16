@@ -1,35 +1,35 @@
 package com.anandmali.composemvvm.pokelist
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.anandmali.composemvvm.data.GetPokemonUseCase
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
+import com.anandmali.composemvvm.data.repository.PokeRepository
 import com.anandmali.composemvvm.data.source.network.PokemonViewDTO
+import com.anandmali.composemvvm.data.source.network.toViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
-    private val getPokesUseCase: GetPokemonUseCase
+    private val pokeRepository: PokeRepository
 ) : ViewModel() {
 
-    private val _pokemonListStatus: MutableState<List<PokemonViewDTO>> = mutableStateOf(ArrayList())
-
-    val pokemonListStatus: State<List<PokemonViewDTO>>
-        get() = _pokemonListStatus
+    val pokemonListStatus: Flow<PagingData<PokemonViewDTO>>
 
     init {
-        getPokeList()
+        pokemonListStatus = getPokeList().cachedIn(viewModelScope)
     }
 
-    private fun getPokeList() {
-        val res = getPokesUseCase()
-        res.onEach {
-            _pokemonListStatus.value = it
-        }.launchIn(viewModelScope)
+    private fun getPokeList(): Flow<PagingData<PokemonViewDTO>> {
+        return pokeRepository.getPokeList()
+            .map { data ->
+                data.map {
+                    it.toViewData()
+                }
+            }
     }
 }
