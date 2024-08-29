@@ -8,9 +8,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -21,7 +20,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +36,7 @@ import com.anandmali.composemvvm.R
 import com.anandmali.composemvvm.data.source.network.PokemonViewDTO
 import com.anandmali.composemvvm.ui.theme.Purple40
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListScreen(
     navController: NavHostController,
@@ -117,19 +116,20 @@ fun PokemonListItem(
             }
         }
 
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(poke.imageUrl)
-                .build(),
-            error = painterResource(R.drawable.baseline_catching_pokemon_24),
-            contentDescription = stringResource(R.string.description),
-            contentScale = ContentScale.Fit,
+        ListItemImageAnimator(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .size(130.dp)
-                .clip(CircleShape)
-                .padding(8.dp)
-        )
+                .padding(8.dp),
+            child = {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(poke.imageUrl)
+                        .build(),
+                    error = painterResource(R.drawable.baseline_catching_pokemon_24),
+                    contentDescription = stringResource(R.string.description),
+                    contentScale = ContentScale.Fit
+                )
+            })
     }
 }
 
