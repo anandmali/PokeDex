@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                             it.arguments?.getString("pokeName")
                         }
                         DetailsScreen(
-                            pokemonName = pokemonName?.toLowerCase(Locale.ROOT) ?: "",
+                            pokemonName = pokemonName?.lowercase(Locale.ROOT) ?: "",
                             navController = navController
                         )
                     }
