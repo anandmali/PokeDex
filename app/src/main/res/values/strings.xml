@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">composeMVVM</string>
+    <string name="app_name">PokeDex</string>
     <string name="description">poke image</string>
     <string name="height">Height</string>
     <string name="weight">Weight</string>

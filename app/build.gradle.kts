@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.anandmali.composemvvm"
+    namespace = "com.anandmali.pokedex"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.anandmali.composemvvm"
+        applicationId = "com.anandmali.pokedex"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

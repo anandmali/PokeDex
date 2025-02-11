@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "composeMVVM"
+rootProject.name = "pokedex"
 include(":app")
